@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SP Reboot Plugin</string>
+	<string name="plugin_title">Reboot Manager</string>
+</resources>
