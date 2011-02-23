@@ -14,7 +14,7 @@
 <resources>
 	<!-- positions  -->
 	<string-array name="actions">
-		<item>Shutdown</item>
 		<item>Reboot</item>
+		<item>Shutdown</item>
 	</string-array>
 </resources>

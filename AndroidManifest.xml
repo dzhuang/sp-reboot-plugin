@@ -8,13 +8,14 @@
                   android:label="@string/plugin_title"
                   android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
-                <action android:name="com.probeez.profiles.plugin.EDIT_CONDITION" />
+                <action android:name="com.probeez.profiles.plugin.EDIT_ACTION" />
 								<category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <receiver android:name="PluginController"
                   android:label="@string/plugin_title">
             <intent-filter>
+                <action android:name="com.probeez.profiles.plugin.PERFORM_ACTION" />
                 <action android:name="com.probeez.profiles.plugin.QUERY_PLUGIN_STATUS" />
             </intent-filter>
         </receiver>

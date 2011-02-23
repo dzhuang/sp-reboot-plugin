@@ -9,8 +9,14 @@ import android.util.Log;
 import com.probeez.profiles.plugin.PluginBroadcastReceiver;
 
 /**
- * Class to listen for SP intent broadcasts.
- * It should be declared in <code>AndroidManifest.xml</code> with appropriate intent filter. 
+ * Class to listen for SP intent broadcasts.<br>
+ * It should be declared in <code>AndroidManifest.xml</code> with the intent filter:
+ * <pre>
+ * &lt;intent-filter&gt;
+ *    &lt;action android:name="com.probeez.profiles.plugin.PERFORM_ACTION" /&gt;
+ *    &lt;action android:name="com.probeez.profiles.plugin.QUERY_PLUGIN_STATUS" /&gt;
+ * &lt;/intent-filter&gt;
+ * </pre>
  */
 public class PluginController extends PluginBroadcastReceiver {
 
@@ -18,14 +24,16 @@ public class PluginController extends PluginBroadcastReceiver {
 	static final String STATE_ACTION = "state_action";
 	static final int ACTION_REBOOT = 0;
 	static final int ACTION_SHUTDOWN = 1;
-
 	@Override
-  protected void onPerformAction(Context context, Bundle state) {
+  protected void onPerformAction(Context context, Bundle state, boolean triggered) {
+		if (!triggered) {
+			return;
+		}
 		int action = state.getInt(STATE_ACTION);
 		try {
-			String cmd = "reboot"+(action==ACTION_REBOOT? "": " -p");
 	    Runtime.getRuntime().exec(new String[] {
-	    	"su", "-c", cmd
+	    	"su", "-c",
+	    	(action==ACTION_REBOOT? "reboot": "reboot -p")
 	    });
 		} catch (IOException e) {
 			Log.e(TAG, "Cannot execute su", e);
