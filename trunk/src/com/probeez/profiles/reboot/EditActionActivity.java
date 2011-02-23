@@ -32,7 +32,7 @@ public class EditActionActivity extends Activity implements OnClickListener, OnC
 			return;
 		}
 		Bundle state = intent.getBundleExtra(EXTRA_STATE);
-		mAction = state!=null? state.getInt(STATE_ACTION, ACTION_REBOOT): ACTION_SHUTDOWN; 
+		mAction = state!=null? state.getInt(STATE_ACTION, ACTION_REBOOT): ACTION_REBOOT; 
 	}
 
 	@Override
