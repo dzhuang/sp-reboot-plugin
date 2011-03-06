@@ -4,12 +4,19 @@
       android:versionCode="1"
       android:versionName="1.0">
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name=".EditActionActivity"
+        <activity android:name="EditActionActivity"
                   android:label="@string/plugin_title"
                   android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="com.probeez.profiles.plugin.EDIT_ACTION" />
 								<category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name="RebootTimerActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+							<action android:name="android.intent.action.MAIN" />
+							<category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <receiver android:name="PluginController"
