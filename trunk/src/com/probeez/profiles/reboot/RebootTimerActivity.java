@@ -4,6 +4,7 @@ import static com.probeez.profiles.reboot.PluginController.ACTION_REBOOT;
 import static com.probeez.profiles.reboot.PluginController.STATE_ACTION;
 import static com.probeez.profiles.reboot.PluginController.TAG;
 
+import java.io.File;
 import java.io.IOException;
 
 import android.app.Activity;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RebootTimerActivity extends Activity implements OnClickListener {
 
@@ -52,12 +54,21 @@ public class RebootTimerActivity extends Activity implements OnClickListener {
 	private TimerHandler mHandler	= new TimerHandler();
 	private TextView mTimerText;
 	private int mAction;
+	private String mCmd;
+	private final static String[] SU_CMDS = {
+		"/system/bin/su", "/system/xbin/su" 
+	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent intent = getIntent();
 		mAction = intent!=null? intent.getIntExtra(STATE_ACTION, ACTION_REBOOT): ACTION_REBOOT;
+		mCmd = getRootCommand();
+		if (mCmd==null) {
+			Toast.makeText(this, R.string.no_su_cmd_found, Toast.LENGTH_LONG).show();
+			finish();
+		}
 	}
 
 	@Override
@@ -66,6 +77,19 @@ public class RebootTimerActivity extends Activity implements OnClickListener {
 		showDialog(0);
 		mHandler.postCountdown(5);
 	}
+
+	public String getRootCommand() {
+		try {
+			for (String cmd : SU_CMDS) {
+				if (new File(cmd).exists()) {
+					return cmd;
+				}
+			}
+		} catch (Throwable e) {
+			Log.e(TAG, "'su' not found", e);
+		}
+		return null;
+  }
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
