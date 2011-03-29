@@ -3,4 +3,5 @@
   <string name="app_name">SP Reboot Plugin</string>
 	<string name="plugin_title">Reboot Manager</string>
 	<string name="reboot_warning">Phone is about to be powered off</string>
+	<string name="no_su_cmd_found">No \'su\' command found. Was phone rooted?</string>
 </resources>
