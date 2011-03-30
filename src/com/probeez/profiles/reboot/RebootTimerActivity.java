@@ -112,7 +112,7 @@ public class RebootTimerActivity extends Activity implements OnClickListener {
 	public void reboot() {
 		try {
 	    Runtime.getRuntime().exec(new String[] {
-	    	"su", "-c",
+	    	mCmd, "-c",
 	    	(mAction==ACTION_REBOOT? "reboot": "reboot -p")
 	    });
 		} catch (IOException e) {
