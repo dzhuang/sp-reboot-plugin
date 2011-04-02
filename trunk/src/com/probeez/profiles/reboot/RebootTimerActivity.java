@@ -1,10 +1,11 @@
 package com.probeez.profiles.reboot;
 
+import static com.probeez.profiles.reboot.FileUtils.REBOOT_CMD;
+import static com.probeez.profiles.reboot.FileUtils.SU_CMD;
 import static com.probeez.profiles.reboot.PluginController.ACTION_REBOOT;
 import static com.probeez.profiles.reboot.PluginController.STATE_ACTION;
 import static com.probeez.profiles.reboot.PluginController.TAG;
 
-import java.io.File;
 import java.io.IOException;
 
 import android.app.Activity;
@@ -38,7 +39,7 @@ public class RebootTimerActivity extends Activity implements OnClickListener {
 					return;
 				}
 				finish();
-				reboot();
+//				reboot();
 				break;
 			}
 		}
@@ -54,19 +55,22 @@ public class RebootTimerActivity extends Activity implements OnClickListener {
 	private TimerHandler mHandler	= new TimerHandler();
 	private TextView mTimerText;
 	private int mAction;
-	private String mCmd;
-	private final static String[] SU_CMDS = {
-		"/system/bin/su", "/system/xbin/su" 
-	};
+	private String mSuCmd;
+	private String mRebootCmd;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent intent = getIntent();
 		mAction = intent!=null? intent.getIntExtra(STATE_ACTION, ACTION_REBOOT): ACTION_REBOOT;
-		mCmd = getRootCommand();
-		if (mCmd==null) {
-			Toast.makeText(this, R.string.no_su_cmd_found, Toast.LENGTH_LONG).show();
+		mSuCmd = FileUtils.getCommandFullPath(SU_CMD);
+		if (mSuCmd==null) {
+			Toast.makeText(this, getString(R.string.no_cmd_found, SU_CMD), Toast.LENGTH_LONG).show();
+			finish();
+		}
+		mRebootCmd = FileUtils.findRebootCommand(mSuCmd, this);
+		if (mRebootCmd==null) {
+			Toast.makeText(this, getString(R.string.no_cmd_found, REBOOT_CMD), Toast.LENGTH_LONG).show();
 			finish();
 		}
 	}
@@ -77,19 +81,6 @@ public class RebootTimerActivity extends Activity implements OnClickListener {
 		showDialog(0);
 		mHandler.postCountdown(5);
 	}
-
-	public String getRootCommand() {
-		try {
-			for (String cmd : SU_CMDS) {
-				if (new File(cmd).exists()) {
-					return cmd;
-				}
-			}
-		} catch (Throwable e) {
-			Log.e(TAG, "'su' not found", e);
-		}
-		return null;
-  }
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
@@ -112,11 +103,13 @@ public class RebootTimerActivity extends Activity implements OnClickListener {
 	public void reboot() {
 		try {
 	    Runtime.getRuntime().exec(new String[] {
-	    	mCmd, "-c",
-	    	(mAction==ACTION_REBOOT? "reboot": "reboot -p")
+	    	mSuCmd, "-c",
+	    	(mAction==ACTION_REBOOT? mRebootCmd: mRebootCmd+" -p")
 	    });
 		} catch (IOException e) {
-			Log.e(TAG, "Cannot execute su", e);
+			Log.e(TAG, "Cannot execute "+mSuCmd, e);
     }
 	}
+	
+	
 }
