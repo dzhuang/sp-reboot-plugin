@@ -39,7 +39,7 @@ public class RebootTimerActivity extends Activity implements OnClickListener {
 					return;
 				}
 				finish();
-//				reboot();
+				reboot();
 				break;
 			}
 		}
