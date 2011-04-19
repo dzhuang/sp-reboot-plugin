@@ -4,4 +4,8 @@
 	<string name="plugin_title">Reboot Manager</string>
 	<string name="reboot_warning">Phone is about to be powered off</string>
 	<string name="no_cmd_found">No \'%s\' command found. Was phone rooted?</string>
+	<string name="intro_banner_title">Setting Profiles Reboot Plugin</string>
+	<string name="intro_banner_message">root access required</string>
+	<string name="intro_test_button">Test reboot</string>
+	<string name="intro_use_embedded_cmd">Use embedded reboot command</string>
 </resources>

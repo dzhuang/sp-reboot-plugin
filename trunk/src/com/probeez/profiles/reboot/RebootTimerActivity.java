@@ -2,11 +2,18 @@ package com.probeez.profiles.reboot;
 
 import static com.probeez.profiles.reboot.FileUtils.REBOOT_CMD;
 import static com.probeez.profiles.reboot.FileUtils.SU_CMD;
-import static com.probeez.profiles.reboot.PluginController.ACTION_REBOOT;
+import static com.probeez.profiles.reboot.PluginController.*;
 import static com.probeez.profiles.reboot.PluginController.STATE_ACTION;
 import static com.probeez.profiles.reboot.PluginController.TAG;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.StringWriter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -63,7 +70,7 @@ public class RebootTimerActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		Intent intent = getIntent();
 		mAction = intent!=null? intent.getIntExtra(STATE_ACTION, ACTION_REBOOT): ACTION_REBOOT;
-		mSuCmd = FileUtils.getCommandFullPath(SU_CMD);
+		mSuCmd = FileUtils.getSystemCommandPath(SU_CMD);
 		if (mSuCmd==null) {
 			Toast.makeText(this, getString(R.string.no_cmd_found, SU_CMD), Toast.LENGTH_LONG).show();
 			finish();

@@ -13,14 +13,25 @@ public class FileUtils {
 	public final static String SU_CMD = "su";
 	public final static String REBOOT_CMD = "reboot";
 	private final static String[] CMD_PATHS = {
-		"/system/bin/", "/system/xbin/", "./" 
+		"/system/bin/", "/system/xbin/"
 	};
 
   public static String findRebootCommand(String su, Context context) {
-		String cmd = getCommandFullPath(REBOOT_CMD);
+		String cmd;
+		// check if embedded or system command exists
+		if (PluginController.isEmbeddedCmdUsed(context)) {
+			cmd = getEmbeddedCommandPath(context, REBOOT_CMD);
+		} else {
+			cmd = getSystemCommandPath(REBOOT_CMD);
+			if (cmd!=null) {
+				return cmd;
+			}
+			cmd = getEmbeddedCommandPath(context, REBOOT_CMD);
+		}
 		if (cmd!=null) {
 			return cmd;
 		}
+		// activate embedded command
 		try {
 			copyStream(
 				context.getAssets().open(REBOOT_CMD), 
@@ -38,11 +49,12 @@ public class FileUtils {
 		}
 	}
 
-	public static String getCommandFullPath(String name) {
+	public static String getSystemCommandPath(String name) {
 		try {
 			for (String path : CMD_PATHS) {
 				String cmd = path+name;
-				if (new File(cmd).exists()) {
+				File file = new File(cmd);
+				if (file.exists()) {
 					Log.i(TAG, "Command "+name+" found:"+cmd);
 					return cmd;
 				}
@@ -53,6 +65,21 @@ public class FileUtils {
 		return null;
   }
 
+	private static String getEmbeddedCommandPath(Context context, String name) {
+		try {
+			// locate at ./files/*
+			File file = context.getFileStreamPath(name);
+			if (file.exists()) {
+				String cmd = file.getAbsolutePath();
+				Log.i(TAG, "Command "+name+" found:"+cmd);
+				return cmd;
+			}
+		} catch (Throwable e) {
+			Log.e(TAG, name+" command not found", e);
+		}
+		return null;
+	}
+	
   private static void copyStream(InputStream inputStream, OutputStream outputStream) throws IOException {
   	try {
 	    try {

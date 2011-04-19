@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:padding="18dip"
+    >
+
+    <ImageView android:id="@+id/icon"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="100dip"
+        android:layout_height="100dip"
+        android:src="@drawable/icon" />
+
+    <TextView android:id="@+id/banner"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/icon"
+        android:layout_marginTop="10dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:text="@string/intro_banner_title" />
+
+    <TextView android:id="@+id/message"
+        android:layout_below="@id/banner"
+        android:layout_marginTop="10dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:text="@string/intro_banner_message" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dip"
+        >
+
+			<CheckBox 
+					android:id="@+id/use_embedded_cmd" 
+          android:layout_marginTop="10dip"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/intro_use_embedded_cmd"
+			/>
+				   
+      <Button android:id="@+id/reboot_button" 
+       	android:layout_below="@id/use_embedded_cmd"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="10dip"
+         android:paddingLeft="18dip"
+         android:paddingRight="18dip"
+         android:text="@string/intro_test_button"
+       	android:layout_centerHorizontal="true"
+         />
+    </RelativeLayout>
+</RelativeLayout>
