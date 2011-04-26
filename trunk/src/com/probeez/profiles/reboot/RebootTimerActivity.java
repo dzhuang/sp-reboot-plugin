@@ -74,11 +74,13 @@ public class RebootTimerActivity extends Activity implements OnClickListener {
 		if (mSuCmd==null) {
 			Toast.makeText(this, getString(R.string.no_cmd_found, SU_CMD), Toast.LENGTH_LONG).show();
 			finish();
+			return;
 		}
 		mRebootCmd = FileUtils.findRebootCommand(mSuCmd, this);
 		if (mRebootCmd==null) {
 			Toast.makeText(this, getString(R.string.no_cmd_found, REBOOT_CMD), Toast.LENGTH_LONG).show();
 			finish();
+			return;
 		}
 	}
 
