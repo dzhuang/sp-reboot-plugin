@@ -1,6 +1,6 @@
 package com.probeez.profiles.reboot;
 
-import static com.probeez.profiles.reboot.PluginController.ACTION_REBOOT;
+import static com.probeez.profiles.reboot.RebootHelper.ACTION_REBOOT;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +17,7 @@ public class PluginIntroActivity extends Activity implements OnClickListener {
 		Button button = (Button) findViewById(R.id.reboot_button);
 		button.setOnClickListener(this);
 		CheckBox checkbox = (CheckBox) findViewById(R.id.use_embedded_cmd);
-		checkbox.setChecked(PluginController.isEmbeddedCmdUsed(this));
+		checkbox.setChecked(RebootHelper.isEmbeddedCmdUsed(this));
 		checkbox.setOnClickListener(this);
 	}
 
@@ -29,7 +29,7 @@ public class PluginIntroActivity extends Activity implements OnClickListener {
 				break;
 			case R.id.use_embedded_cmd:
 				boolean enabled = ((CheckBox)v).isChecked();
-				PluginController.setEmbeddedCmdUsed(this, enabled);
+				RebootHelper.setEmbeddedCmdUsed(this, enabled);
 				break;
 		}
   }

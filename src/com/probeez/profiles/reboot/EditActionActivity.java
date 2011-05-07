@@ -4,6 +4,7 @@ import static com.probeez.profiles.plugin.PluginIntent.ACTION_EDIT_CONDITION;
 import static com.probeez.profiles.plugin.PluginIntent.EXTRA_STATE;
 import static com.probeez.profiles.plugin.PluginIntent.EXTRA_SUMMARY;
 import static com.probeez.profiles.reboot.PluginController.*;
+import static com.probeez.profiles.reboot.RebootHelper.*;
 
 import com.probeez.profiles.plugin.PluginIntent;
 

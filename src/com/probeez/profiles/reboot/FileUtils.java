@@ -7,6 +7,9 @@ import java.io.OutputStream;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
+import static com.probeez.profiles.reboot.FileUtils.REBOOT_CMD;
+import static com.probeez.profiles.reboot.FileUtils.SU_CMD;
 import static com.probeez.profiles.reboot.PluginController.TAG;
 
 public class FileUtils {
@@ -16,10 +19,10 @@ public class FileUtils {
 		"/system/bin/", "/system/xbin/"
 	};
 
-  public static String findRebootCommand(String su, Context context) {
+  public static String findRebootCommand(String su, Context context, boolean useEmbedded) {
 		String cmd;
 		// check if embedded or system command exists
-		if (PluginController.isEmbeddedCmdUsed(context)) {
+		if (useEmbedded) {
 			cmd = getEmbeddedCommandPath(context, REBOOT_CMD);
 		} else {
 			cmd = getSystemCommandPath(REBOOT_CMD);
