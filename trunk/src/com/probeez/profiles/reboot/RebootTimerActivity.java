@@ -1,19 +1,8 @@
 package com.probeez.profiles.reboot;
 
-import static com.probeez.profiles.reboot.FileUtils.REBOOT_CMD;
-import static com.probeez.profiles.reboot.FileUtils.SU_CMD;
+import static com.probeez.profiles.reboot.RebootHelper.*;
 import static com.probeez.profiles.reboot.PluginController.*;
-import static com.probeez.profiles.reboot.PluginController.STATE_ACTION;
-import static com.probeez.profiles.reboot.PluginController.TAG;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.StringWriter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -46,7 +35,7 @@ public class RebootTimerActivity extends Activity implements OnClickListener {
 					return;
 				}
 				finish();
-				reboot();
+				mHelper.reboot(mAction);
 				break;
 			}
 		}
@@ -64,21 +53,23 @@ public class RebootTimerActivity extends Activity implements OnClickListener {
 	private int mAction;
 	private String mSuCmd;
 	private String mRebootCmd;
+	private RebootHelper mHelper;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent intent = getIntent();
 		mAction = intent!=null? intent.getIntExtra(STATE_ACTION, ACTION_REBOOT): ACTION_REBOOT;
-		mSuCmd = FileUtils.getSystemCommandPath(SU_CMD);
+		mHelper = new RebootHelper(this);
+		mSuCmd = mHelper.getSuCommand();
 		if (mSuCmd==null) {
-			Toast.makeText(this, getString(R.string.no_cmd_found, SU_CMD), Toast.LENGTH_LONG).show();
+			Toast.makeText(this, getString(R.string.no_cmd_found, FileUtils.SU_CMD), Toast.LENGTH_LONG).show();
 			finish();
 			return;
 		}
-		mRebootCmd = FileUtils.findRebootCommand(mSuCmd, this);
+		mRebootCmd = mHelper.getRebootCommand();
 		if (mRebootCmd==null) {
-			Toast.makeText(this, getString(R.string.no_cmd_found, REBOOT_CMD), Toast.LENGTH_LONG).show();
+			Toast.makeText(this, getString(R.string.no_cmd_found, FileUtils.REBOOT_CMD), Toast.LENGTH_LONG).show();
 			finish();
 			return;
 		}
@@ -108,17 +99,5 @@ public class RebootTimerActivity extends Activity implements OnClickListener {
 		mHandler.cancelCountdown();
 		finish();
 	}
-	
-	public void reboot() {
-		try {
-	    Runtime.getRuntime().exec(new String[] {
-	    	mSuCmd, "-c",
-	    	(mAction==ACTION_REBOOT? mRebootCmd: mRebootCmd+" -p")
-	    });
-		} catch (IOException e) {
-			Log.e(TAG, "Cannot execute "+mSuCmd, e);
-    }
-	}
-	
 	
 }
