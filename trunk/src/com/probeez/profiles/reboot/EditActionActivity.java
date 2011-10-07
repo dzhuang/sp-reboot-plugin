@@ -1,6 +1,6 @@
 package com.probeez.profiles.reboot;
 
-import static com.probeez.profiles.plugin.PluginIntent.ACTION_EDIT_CONDITION;
+import static com.probeez.profiles.plugin.PluginIntent.ACTION_EDIT_ACTION;
 import static com.probeez.profiles.plugin.PluginIntent.EXTRA_STATE;
 import static com.probeez.profiles.plugin.PluginIntent.EXTRA_SUMMARY;
 import static com.probeez.profiles.reboot.PluginController.*;
@@ -28,7 +28,7 @@ public class EditActionActivity extends Activity implements OnClickListener, OnC
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 		Intent intent = getIntent();
-		if (!ACTION_EDIT_CONDITION.equals(intent.getAction())) {
+		if (!ACTION_EDIT_ACTION.equals(intent.getAction())) {
 			finish();
 			return;
 		}
